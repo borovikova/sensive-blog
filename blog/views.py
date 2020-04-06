@@ -54,8 +54,8 @@ def index(request):
         'tags').fetch_with_comments_count()
     most_fresh_posts = fresh_posts[-5:]
 
-    # most_popular_tags = Tag.objects.popular()[:5]
-    most_popular_tags = Tag.objects.popular().prefetch_related(Prefetch('posts', queryset=Tag.objects.annotate(Count('posts'))))[:5]
+    most_popular_tags = Tag.objects.popular()[:5].annotate(Count('posts'))
+    # most_popular_tags = Tag.objects.popular().prefetch_related(Prefetch('posts', queryset=Tag.objects.annotate(Count('posts'))))[:5]
 
     context = {
         'most_popular_posts': [serialize_post_optimized(post) for post in most_popular_posts],
